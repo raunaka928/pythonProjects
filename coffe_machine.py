@@ -86,13 +86,13 @@ while machine_on:
     for drink in MENU:
         if user_coffee == drink:
             price = MENU[drink]['cost']
-            resource_check(user_coffee)
-            print(f'A {drink} costs ${price}. Enter the your Coins')
-            user_money = coins()
-            cash += transaction(user_money,user_coffee)
-            for resource in MENU[user_coffee]['ingredients']:
-                resources[resource] = resources[resource] - MENU[user_coffee]['ingredients'][resource]
-            print(f'Here is your {user_coffee}. Enjoy!')
+            if resource_check(user_coffee):
+                print(f'A {drink} costs ${price}. Enter the your Coins')
+                user_money = coins()
+                cash += transaction(user_money,user_coffee)
+                for resource in MENU[user_coffee]['ingredients']:
+                    resources[resource] = resources[resource] - MENU[user_coffee]['ingredients'][resource]
+                print(f'Here is your {user_coffee}. Enjoy!')
 
 
 
