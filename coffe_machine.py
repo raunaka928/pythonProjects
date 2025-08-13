@@ -51,21 +51,22 @@ def resource_check(bev):
         if MENU[bev]['ingredients'][resource] > resources[resource]:
             print("Insufficient resources")
             return False
-        else:
-             return True
+    return True
 
 def transaction(money,bev):
     if MENU[bev]['cost'] > money:
         print("Insufficient Funds. Money Refunded")
-        return None
+        return False
     elif MENU[bev]['cost'] == money:
         print("Transaction Successful")
-        return money
+        global  cash
+        cash += money
+        return True
     else:
-        change = money - MENU[bev]['cost']
+        change = round(money - MENU[bev]['cost'],2)
         print(f'Here is ${change} in change.')
-        money = money - change
-        return money
+        cash = MENU[bev]['cost']
+        return True
 def make_coffee(bev):
     for resource in MENU[bev]['ingredients']:
         if MENU[bev]['ingredients'][resource] in resources:
@@ -89,10 +90,7 @@ while machine_on:
             if resource_check(user_coffee):
                 print(f'A {drink} costs ${price}. Enter the your Coins')
                 user_money = coins()
-                cash += transaction(user_money,user_coffee)
-                for resource in MENU[user_coffee]['ingredients']:
-                    resources[resource] = resources[resource] - MENU[user_coffee]['ingredients'][resource]
-                print(f'Here is your {user_coffee}. Enjoy!')
-
-
-
+                if transaction(user_money,user_coffee):
+                    for resource in MENU[user_coffee]['ingredients']:
+                        resources[resource] = resources[resource] - MENU[user_coffee]['ingredients'][resource]
+                    print(f'Here is your {user_coffee}. Enjoy!')
